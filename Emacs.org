@@ -785,6 +785,9 @@ Use variable pitch font in documentation modes.
   ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
   (use-package forge)
 
+; may bring the perfromance issue
+(setq auto-revert-check-vc-info t)
+
 #+end_src
 
 #+RESULTS:
