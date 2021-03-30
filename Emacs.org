@@ -454,7 +454,7 @@ Open config file
 
 #+begin_src emacs-lisp
 
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
   (global-set-key (kbd "C-z") 'undo)
 
 #+end_src

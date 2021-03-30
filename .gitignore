@@ -6,3 +6,5 @@
 /init.el
 /recentf
 *.sqlite
+*.el
+/recentf~
