@@ -1,4 +1,3 @@
-# This is my Emacs configuration.
+# Repo of my personal Emacs configuration
 
-* View the [OrgFile](./Emacs.org)
-* View the [HTML](https://htmlpreview.github.io/?https://github.com/ru13r/emacs.d/blob/master/Emacs.html)
+View the [web page](https://ru13r.github.io/emacs.d/)
