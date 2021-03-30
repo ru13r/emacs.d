@@ -13,6 +13,7 @@
 #+end_src
 
 * Package System Setup
+
 #+begin_src emacs-lisp
 
   (require 'package)
@@ -47,6 +48,7 @@
 
 * Basic Configuration
 ** Disable Window Defaults
+
 #+begin_src emacs-lisp
 
   (setq inhibit-startup-message t)
@@ -141,6 +143,7 @@ Save and restore Emacs status, including buffers, modes, point and windows.
   (setq default-input-method 'russian-computer)
 
 #+end_src
+
 * Global Packages
 ** Which Key
 
@@ -323,19 +326,20 @@ Several packages depend on this
 #+end_src
 
 ** Color Theme
+
 #+begin_src emacs-lisp
 
   (use-package doom-themes
     :config
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-          doom-themes-enable-italic t  ; if nil, italics is universally disabled
+          doom-themes-enable-italic t       ; if nil, italics is universally disabled
           doom-themes-treemacs-theme "doom-colors")
     (doom-themes-visual-bell-config)   ; Enable flashing mode-line on errors
     (doom-themes-neotree-config)       ; Enable custom neotree theme
     (doom-themes-treemacs-config))
     :init
-    (load-theme 'doom-material t)
+    (load-theme 'doom-miramare t)
 
 #+end_src
 
@@ -436,7 +440,8 @@ A slightly more apparent indicator of which buffer is active at the moment.
 
 #+end_src
 
-* Key Bindings
+* Productivity
+** Key Bindings
 
 Open config file
 
@@ -659,7 +664,7 @@ This snippet adds a hook to =org-mode= buffers so that =cfg/org-babel-tangle-con
 
 #+end_src
 
-* Writing Mode
+* Text Modes
 ** Variable Pitch Mode
 
 Use =variable-pitch-mode= and =flyspell-mode=.
@@ -756,7 +761,7 @@ Word counting shows word information in the modeline.
 
 #+end_src
 
-* Documentation Mode
+** Docs
 
 Use variable pitch font in documentation modes.
 
@@ -768,31 +773,7 @@ Use variable pitch font in documentation modes.
 
 #+end_src
 
-* Version Control
-** Magit
-#+begin_src emacs-lisp
-
-  (use-package magit
-    :custom
-    (magit-display-buffer-function
-     #'magit-display-buffer-same-window-except-diff-v1))
-
-  ;; (use-package evil-magit
-  ;;   :after magit)
-
-  ;; NOTE: Make sure to configure a GitHub token before using this package!
-  ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
-  ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
-  (use-package forge)
-
-; may bring the perfromance issue
-(setq auto-revert-check-vc-info t)
-
-#+end_src
-
-#+RESULTS:
-
-* Development
+* Development Modes
 ** Code editor
 *** General Settings
 #+begin_src emacs-lisp
@@ -955,17 +936,42 @@ Use variable pitch font in documentation modes.
   ))
 
 #+end_src
+* Version Control
+** Magit
+#+begin_src emacs-lisp
+
+  (use-package magit
+    :custom
+    (magit-display-buffer-function
+     #'magit-display-buffer-same-window-except-diff-v1))
+
+  ;; (use-package evil-magit
+  ;;   :after magit)
+
+  ;; NOTE: Make sure to configure a GitHub token before using this package!
+  ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
+  ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
+  (use-package forge)
+
+; may bring the perfromance issue
+(setq auto-revert-check-vc-info t)
+
+#+end_src
+
+#+RESULTS:
 
 * Miscellaneous
 ** Custom Config File
 Custom file is used to avoid =customize-set-variables= clutter in the
-main =init.el= file,
+main =init.el= file
+
 #+begin_src emacs-lisp
 
   (setq custom-file "~/.emacs.d/custom.el")
   (ignore-errors (load custom-file))
 
 #+end_src
+
 ** Miscellaneous Settings
 
 End littering file systems with backups and auto saves.
@@ -996,6 +1002,7 @@ By default, the list of recent files gets cluttered up with the contents of down
 #+end_src
 
 ** Sudo Edit
+
 #+begin_src emacs-lisp
 
   (use-package sudo-edit)
