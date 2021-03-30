@@ -144,7 +144,7 @@ Save and restore Emacs status, including buffers, modes, point and windows.
 
 #+end_src
 
-* Global Packages
+* Emacs Improvements
 ** Which Key
 
 [[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
@@ -437,71 +437,6 @@ A slightly more apparent indicator of which buffer is active at the moment.
     :config
       (setq dimmer-fraction 0.2)
       (dimmer-mode))
-
-#+end_src
-
-* Productivity
-** Key Bindings
-
-Open config file
-
-#+begin_src emacs-lisp
-
-  (defun open-config-file ()
-    "Open my Emacs.org file"
-    (interactive)
-    (find-file "~/.emacs.d/Emacs.org"))
-  (global-set-key (kbd "C-c e") #'open-config-file)
-
-#+end_src
-
-“Modern” keys.
-
-#+begin_src emacs-lisp
-
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-  (global-set-key (kbd "C-z") 'undo)
-
-#+end_src
-
-
-#+begin_src emacs-lisp
-
-  (global-set-key (kbd "C-c 3") #'split-window-right)
-  (global-set-key (kbd "C-c /") #'comment-dwim)
-  (global-set-key "\C-d" "\C-a\C- \C-n\M-w\C-y\C-p") ; duplicate line
-
-  ;; auto complete
-  ;(global-set-key (kbd "C-<tab>") 'dabbrev-expand)
-  ;(define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
-
-#+end_src
-
-VS Code has a great feature where you can just copy a filename to the clipboard.
-
-#+begin_src emacs-lisp
-
-  (defun copy-file-name-to-clipboard ()
-    "Copy the current buffer file name to the clipboard."
-    (interactive)
-    (let ((filename (if (equal major-mode 'dired-mode) default-directory (buffer-file-name))))
-      (when filename
-        (kill-new filename)
-        (message "Copied buffer file name '%s' to the clipboard." filename))))
-
-  (global-set-key (kbd "C-c P") #'copy-file-name-to-clipboard)
-
-#+end_src
-
-It’s useful to have a scratch buffer around, and more useful to have a key chord to switch to it.
-#+begin_src emacs-lisp
-
-  (defun switch-to-scratch-buffer ()
-    "Switch to the current session's scratch buffer."
-    (interactive)
-    (switch-to-buffer "*scratch*"))
-
-  (global-set-key (kbd "C-c a s") #'switch-to-scratch-buffer)
 
 #+end_src
 
@@ -934,6 +869,81 @@ Use variable pitch font in documentation modes.
     (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
     (define-key haskell-mode-map (kbd "C-c C-o") 'haskell-compile)
   ))
+
+#+end_src
+* Productivity
+** Google This
+
+[[https://github.com/Malabarba/emacs-google-this][google-this.el]] is a package that provides a set of functions and keybindings for launching google searches from within emacs.
+
+#+begin_src emacs-lisp
+
+(use-package google-this)
+(global-set-key (kbd "C-c g") 'google-this-mode-submap)
+
+#+end_src>
+
+** Key Bindings
+
+Open config file
+
+#+begin_src emacs-lisp
+
+  (defun open-config-file ()
+    "Open my Emacs.org file"
+    (interactive)
+    (find-file "~/.emacs.d/Emacs.org"))
+  (global-set-key (kbd "C-c e") #'open-config-file)
+
+#+end_src
+
+“Modern” keys.
+
+#+begin_src emacs-lisp
+
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  (global-set-key (kbd "C-z") 'undo)
+
+#+end_src
+
+
+#+begin_src emacs-lisp
+
+  (global-set-key (kbd "C-c 3") #'split-window-right)
+  (global-set-key (kbd "C-c /") #'comment-dwim)
+  (global-set-key "\C-d" "\C-a\C- \C-n\M-w\C-y\C-p") ; duplicate line
+
+  ;; auto complete
+  ;(global-set-key (kbd "C-<tab>") 'dabbrev-expand)
+  ;(define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
+
+#+end_src
+
+VS Code has a great feature where you can just copy a filename to the clipboard.
+
+#+begin_src emacs-lisp
+
+  (defun copy-file-name-to-clipboard ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((filename (if (equal major-mode 'dired-mode) default-directory (buffer-file-name))))
+      (when filename
+        (kill-new filename)
+        (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+  (global-set-key (kbd "C-c P") #'copy-file-name-to-clipboard)
+
+#+end_src
+
+It’s useful to have a scratch buffer around, and more useful to have a key chord to switch to it.
+#+begin_src emacs-lisp
+
+  (defun switch-to-scratch-buffer ()
+    "Switch to the current session's scratch buffer."
+    (interactive)
+    (switch-to-buffer "*scratch*"))
+
+  (global-set-key (kbd "C-c a s") #'switch-to-scratch-buffer)
 
 #+end_src
 * Version Control
