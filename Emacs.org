@@ -53,12 +53,12 @@
 
   (setq inhibit-startup-message t)
   ;; disable default window elements
-  (when (window-system)
+  (menu-bar-mode -1)
+(when (window-system)
     (tool-bar-mode -1)
     (blink-cursor-mode -1)
     (tooltip-mode -1)
-    (scroll-bar-mode -1)
-    (menu-bar-mode -1))
+    (scroll-bar-mode -1))
 
 #+end_src
 
@@ -125,7 +125,7 @@ Save and restore Emacs status, including buffers, modes, point and windows.
   (use-package desktop
     :demand t
     :config
-    (desktop-save-mode 1)
+    (desktop-save-mode 0)
     (add-to-list 'desktop-globals-to-save 'golden-ratio-adjust-factor))
 
 #+end_src
@@ -141,6 +141,13 @@ Save and restore Emacs status, including buffers, modes, point and windows.
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
   (prefer-coding-system 'utf-8-unix)
   (setq default-input-method 'russian-computer)
+
+#+end_src
+
+** File Encryption
+
+#+begin_src emacs-lisp
+(require 'epa-file)
 
 #+end_src
 
@@ -879,9 +886,9 @@ Use variable pitch font in documentation modes.
 #+begin_src emacs-lisp
 
 (use-package google-this)
-(global-set-key (kbd "C-c g") 'google-this-mode-submap)
+(global-set-key (kbd "C-c g") google-this-mode-submap)
 
-#+end_src>
+#+end_src
 
 ** Key Bindings
 
@@ -945,6 +952,22 @@ It’s useful to have a scratch buffer around, and more useful to have a key cho
 
   (global-set-key (kbd "C-c a s") #'switch-to-scratch-buffer)
 
+#+end_src
+** Evil Mode
+#+begin_src emacs-lisp
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 #+end_src
 * Version Control
 ** Magit
