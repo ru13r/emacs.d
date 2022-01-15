@@ -6,9 +6,9 @@
 #+begin_src emacs-lisp
 
   (defconst cfg/writing-modes '(org-mode text-mode))
-  (defconst cfg/default-font-size 150)
+  (defconst cfg/default-font-size 180)
   (defconst cfg/fill-column 85)
-  (defconst cfg/fill-dark-columnn 60)
+  (defconst cfg/fill-dark-columnn 100)
 
 #+end_src
 
@@ -63,7 +63,6 @@
 #+end_src
 
 ** Default Settings
-CLOSED: [2021-03-30 Вт 18:42]
 
 Change default variables.
 
@@ -77,16 +76,14 @@ Change default variables.
     visible-bell t			   ; no beep
     ring-bell-function 'ignore
     fill-column cfg/fill-column
-    kill-whole-line t			   ; kill with line with \n
+    kill-whole-line t	                   ; kill with line with \n
     indent-tabs-mode nil		   ; no tab characters allowed
     initial-scratch-message nil	   ; empty scratch
     sentence-end-double-space nil	   ; single space after coma
-
     ;; stop asking whether to save newly added abbrev when quitting emacs
     save-abbrevs 'silently
     ;; turn on abbrev mode globally
     abbrev-mode t
-
     completion-on-separator-character t) ; fill column width
 
     (show-paren-mode t)                  ; show matching parens
@@ -97,6 +94,12 @@ Change default variables.
     (defalias 'yes-or-no-p 'y-or-n-p)    ; y / n prompt
 
 #+end_src
+
+#+begin_src emacs-lisp
+  (if (eq system-type 'darwin)
+   (setq mac-command-modifier 'control))
+#+end_src
+
 
 ** Mouse Scrolling
 #+begin_src emacs-lisp
@@ -133,14 +136,16 @@ Save and restore Emacs status, including buffers, modes, point and windows.
 ** Internationalization
 *** Russian
 
+Be careful with these settings on different systems. This code was originally written for Linux environment. For now I commented it out after switching to MacOS.
+
 #+begin_src emacs-lisp
 
-  (set-language-environment 'UTF-8)
+  ;;(set-language-environment 'UTF-8)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
-  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-  (prefer-coding-system 'utf-8-unix)
-  (setq default-input-method 'russian-computer)
+  ;;(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+  ;; (prefer-coding-system 'utf-8-mac)
+  ;;(setq default-input-method 'russian-computer)
 
 #+end_src
 
@@ -168,13 +173,7 @@ Save and restore Emacs status, including buffers, modes, point and windows.
 
 ** Ivy and Counsel
 
-[[https://oremacs.com/swiper/][Ivy]] is an excellent completion framework for Emacs. It provides a
-minimal yet powerful selection menu that appears when you open files,
-switch buffers, and for many other tasks in Emacs. Counsel is a
-customized set of commands to replace `find-file` with
-`counsel-find-file`, etc which provide useful commands for each of the
-default completion commands. [[https://github.com/Yevgnen/ivy-rich][ivy-rich]] adds extra columns to a few of
-the Counsel commands to provide more information about each item.
+[[https://oremacs.com/swiper/][Ivy]] is an excellent completion framework for Emacs. It provides a minimal yet powerful selection menu that appears when you open files, switch buffers, and for many other tasks in Emacs. Counsel is a customized set of commands to replace `find-file` with `counsel-find-file`, etc which provide useful commands for each of the default completion commands. [[https://github.com/Yevgnen/ivy-rich][ivy-rich]] adds extra columns to a few of the Counsel commands to provide more information about each item.
 
 #+begin_src emacs-lisp
 
@@ -316,17 +315,17 @@ Several packages depend on this
 #+begin_src emacs-lisp
 
   (set-face-attribute 'default nil
-  :font "Fira Code Retina"
+  :font "Fira Code"
   :height cfg/default-font-size)
 
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil
-  :font "Fira Code Retina"
+  :font "Fira Code"
   :height cfg/default-font-size)
 
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil
-  :font "DejaVu Serif"
+  :font "Avenir"
   :height cfg/default-font-size
   :weight 'regular)
 
@@ -346,7 +345,7 @@ Several packages depend on this
     (doom-themes-neotree-config)       ; Enable custom neotree theme
     (doom-themes-treemacs-config))
     :init
-    (load-theme 'doom-miramare t)
+    (load-theme 'doom-one t)
 
 #+end_src
 
@@ -381,7 +380,7 @@ An extensible emacs startup screen showing you what’s most important.
     (setq
       centaur-tabs-mode t
       centaur-tabs-gray-out-icons 'buffer
-      centaur-tabs-style "rounded"
+      centaur-tabs-style "rounded"
       centaur-tabs-height 36
       centaur-tabs-set-icons t
       centaur-tabs-set-modified-marker t
@@ -473,7 +472,7 @@ The =cfg/org-font-setup= function configures various text faces to tweak the siz
                     (org-level-8 . 1.1)))
       (set-face-attribute
         (car face) nil
-          :font "Sans" :weight 'regular :height (cdr face)))
+          :font "Avenir" :weight 'regular :height (cdr face)))
 
     ;; Ensure that anything that should be fixed-pitch in Org files
     ;; appears that way
@@ -509,6 +508,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
      org-fontify-emphasized-text t
      org-src-fontify-natively t))
 
+
   (use-package org
     :hook (org-mode . cfg/org-mode-setup)
     :config
@@ -538,11 +538,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
 
 *** Center Org Buffers
 
-We use [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] to center =org-mode= buffers for a more
-pleasing writing experience as it centers the contents of the buffer
-horizontally to seem more like you are editing a document. This is
-really a matter of personal preference so you can remove the block
-below if you don't like the behavior.
+We use [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] to center =org-mode= buffers for a more pleasing writing experience as it centers the contents of the buffer horizontally to seem more like you are editing a document. This is really a matter of personal preference so you can remove the block below if you don't like the behavior.
 
 #+begin_src emacs-lisp
 
@@ -562,9 +558,8 @@ below if you don't like the behavior.
 #+end_src
 
 ** Babel Languages
-To execute or export code in =org-mode= code blocks, you'll need to
-set up =org-babel-load-languages= for each language you'd like to use.
-[[https://orgmode.org/worg/org-contrib/babel/languages.html][This page]] documents all of the languages that you can use with
+To execute or export code in =org-mode= code blocks, you'll need to set up =org-babel-load-languages= for each language you'd like to use.
+[[https://orgmode.org/worg/org-contrib/babel/languages.html] This page]]: documents all of the languages that you can use with
 =org-babel=.
 
 #+begin_src emacs-lisp
@@ -725,18 +720,35 @@ Use variable pitch font in documentation modes.
 
 #+end_src
 
-*** Fira Code Mode
-
-[[https://github.com/jming422/fira-code-mode][Fira-code-mode]] is a simple minor mode for Fira Code ligatures.
+*** Ligatures
 
 #+begin_src emacs-lisp
 
-  (when (window-system)
-    (use-package fira-code-mode)
-    ;; disable unwanted ligatures for fira-code mode
-    (setq fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x"))
-  ;; Enable fira-code-mode automatically for programming major modes
-    (add-hook 'prog-mode-hook 'fira-code-mode))
+(use-package ligature
+  :load-path "path-to-ligature-repo"
+  :config
+  ;; Enable the "www" ligature in every possible major mode
+  (ligature-set-ligatures 't '("www"))
+  ;; Enable traditional ligature support in eww-mode, if the
+  ;; `variable-pitch' face supports it
+  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+  ;; Enable all Cascadia Code ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+                                       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                                       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                                       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                                       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                                       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                                       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                                       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                                       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+                                       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+                                       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+                                       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+                                       "\\\\" "://"))
+  ;; Enables ligature checks globally in all buffers. You can also do it
+  ;; per mode with `ligature-mode'.
+  (global-ligature-mode t))
 
 #+end_src
 
@@ -961,7 +973,7 @@ It’s useful to have a scratch buffer around, and more useful to have a key cho
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
   :config
-  (evil-mode 1))
+  (evil-mode 0))
 
 (use-package evil-collection
   :after evil
@@ -979,7 +991,7 @@ It’s useful to have a scratch buffer around, and more useful to have a key cho
      #'magit-display-buffer-same-window-except-diff-v1))
 
   ;; (use-package evil-magit
-  ;;   :after magit)
+  ;;   :after magit
 
   ;; NOTE: Make sure to configure a GitHub token before using this package!
   ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
@@ -1030,6 +1042,7 @@ By default, the list of recent files gets cluttered up with the contents of down
 #+begin_src emacs-lisp
 
   (require 'recentf)
+
   (add-to-list 'recentf-exclude "\\elpa")
 
 #+end_src
