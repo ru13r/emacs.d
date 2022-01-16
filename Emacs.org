@@ -380,7 +380,7 @@ An extensible emacs startup screen showing you what’s most important.
     (setq
       centaur-tabs-mode t
       centaur-tabs-gray-out-icons 'buffer
-      centaur-tabs-style "rounded"
+      centaur-tabs-style "rounded"
       centaur-tabs-height 36
       centaur-tabs-set-icons t
       centaur-tabs-set-modified-marker t
@@ -733,7 +733,7 @@ Use variable pitch font in documentation modes.
   ;; `variable-pitch' face supports it
   (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
   ;; Enable all Cascadia Code ligatures in programming modes
-  (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+  (ligature-set-ligatures '(prog-mode interactive-haskell-mode) '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
                                        ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
                                        "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
                                        "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
