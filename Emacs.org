@@ -469,9 +469,9 @@ Treemacs is a file and project explorer similar to NeoTree or vim’s NerdTree, 
             treemacs-user-mode-line-format           nil
             treemacs-user-header-line-format         nil
             treemacs-wide-toggle-width               70
-            treemacs-width                           35
+            treemacs-width                           18
             treemacs-width-increment                 1
-            treemacs-width-is-initially-locked       t
+            treemacs-width-is-initially-locked       nil
             treemacs-workspace-switch-cleanup        nil)
 
       ;; The default width and height of the icons is 22 pixels. If you are
@@ -950,6 +950,7 @@ Use variable pitch font in documentation modes.
     :config
     (setq
       company-minimum-prefix-length 1
+      company-format-magin-function #'company-detect-icons-margin
       company-tooltip-align-annotations t
       company-tooltip-flip-when-above t
       company-show-numbers t
@@ -1000,7 +1001,12 @@ Use variable pitch font in documentation modes.
 #+end_src
 *** Python
 #+begin_src emacs-lisp
-(setq python-shell-interpreter "python3")
+  (setq python-shell-interpreter "python3")
+  (use-package lsp-python-ms
+    :ensure t
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-python-ms)
+                           (lsp))))
 #+end_src
 * Productivity
 ** Google This
