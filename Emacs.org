@@ -382,7 +382,7 @@ An extensible emacs startup screen showing you what’s most important.
         centaur-tabs-mode t
         centaur-tabs-gray-out-icons 'buffer
         centaur-tabs-style "rounded"
-        centaur-tabs-height 36
+        centaur-tabs-height 22
         centaur-tabs-set-icons t
         centaur-tabs-set-modified-marker t
         centaur-tabs-modified-marker "●"
@@ -410,8 +410,15 @@ so that mode line icons display correctly.
     :init (doom-modeline-mode 1)
     :config (setq
               doom-modeline-minor-modes t
-              doom-modeline-height 15))
+              doom-modeline-height 12))
 
+#+end_src
+
+** Minions
+#+begin_src emacs-lisp
+  (use-package minions
+    :config (minions-mode 1)
+    )
 #+end_src
 
 ** Treemacs
@@ -422,7 +429,10 @@ Treemacs is a file and project explorer similar to NeoTree or vim’s NerdTree, 
     :defer t
     :init
     (with-eval-after-load 'winum
-      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+      (define-key winum-keymap (kbd "M-0")
+        #'treemacs-select-window))
+    (with-eval-after-load 'treemacs
+      (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
     :config
     (progn
       (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
