@@ -95,12 +95,6 @@ Change default variables.
 
 #+end_src
 
-#+begin_src emacs-lisp
-  (if (eq system-type 'darwin)
-   (setq mac-command-modifier 'control))
-#+end_src
-
-
 ** Mouse Scrolling
 #+begin_src emacs-lisp
 
@@ -145,7 +139,7 @@ Be careful with these settings on different systems. This code was originally wr
   (set-keyboard-coding-system 'utf-8)
   ;;(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
   ;; (prefer-coding-system 'utf-8-mac)
-  ;;(setq default-input-method 'russian-computer)
+  (setq default-input-method 'russian-computer)
 
 #+end_src
 
@@ -155,6 +149,13 @@ Be careful with these settings on different systems. This code was originally wr
 (require 'epa-file)
 
 #+end_src
+
+** Mac OS X hacks
+#+begin_src emacs-lisp
+  (if (eq system-type 'darwin)
+   (setq mac-command-modifier 'control)
+   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>")))
+   #+end_src
 
 * Emacs Improvements
 ** Which Key
@@ -345,7 +346,7 @@ Several packages depend on this
     (doom-themes-neotree-config)       ; Enable custom neotree theme
     (doom-themes-treemacs-config))
     :init
-    (load-theme 'doom-one t)
+    (load-theme 'doom-gruvbox t)
 
 #+end_src
 
@@ -623,6 +624,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
     (setq
       org-ellipsis " ▾"
       org-agenda-start-with-log-mode t
+      org-startup-folded t
       org-log-done 'time
       org-log-into-drawer t)
     (cfg/org-font-setup))
@@ -1043,6 +1045,15 @@ Open config file
 
 #+end_src
 
+“Windmove” keys. Windmove is a library built into GnuEmacs starting with version 21. It lets you move point from window to window using Shift and the arrow keys.
+
+#+begin_src emacs-lisp
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+  (windmove-default-keybindings 'meta)
+#+end_src
+
+
 
 #+begin_src emacs-lisp
 
@@ -1051,8 +1062,8 @@ Open config file
   (global-set-key "\C-d" "\C-a\C- \C-n\M-w\C-y\C-p") ; duplicate line
 
   ;; auto complete
-  ;(global-set-key (kbd "C-<tab>") 'dabbrev-expand)
-  ;(define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
+  (global-set-key (kbd "C-<tab>") 'dabbrev-expand)
+  (define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
 
 #+end_src
 
@@ -1085,19 +1096,20 @@ It’s useful to have a scratch buffer around, and more useful to have a key cho
 #+end_src
 ** Evil Mode
 #+begin_src emacs-lisp
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 0))
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+    (setq evil-want-keybinding nil)
+    :config
+    (evil-mode 0))
 
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
+  (use-package evil-collection
+    :after evil
+    :diminish evil-collection-unimpaired-mode
+    :ensure t
+    :config
+    (evil-collection-init))
 #+end_src
 * Version Control
 ** Magit
