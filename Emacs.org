@@ -943,23 +943,27 @@ Use variable pitch font in documentation modes.
 
   (use-package company
     :hook
-      ((lsp-mode prog-mode elisp-mode) . company-mode)
+    ((lsp-mode prog-mode elisp-mode) . company-mode)
     :diminish (company-mode "[CC]")
     :bind (:map company-active-map
-           ("<tab>" . company-complete-selection))
-          (:map lsp-mode-map
-           ("<tab>" . company-indent-or-complete-common))
+                ("<tab>" . company-complete-selection))
+    (:map lsp-mode-map
+          ("<tab>" . company-indent-or-complete-common))
     :config
     (setq
-      company-minimum-prefix-length 1
-      company-format-magin-function #'company-detect-icons-margin
-      company-tooltip-align-annotations t
-      company-tooltip-flip-when-above t
-      company-show-numbers t
-      company-idle-delay 0.2))
+     company-minimum-prefix-length 1
+     company-format-magin-function #'company-detect-icons-margin
+     company-tooltip-align-annotations t
+     company-tooltip-flip-when-above t
+     company-show-numbers t
+     company-idle-delay 0.2))
 
-  ;(use-package company-box
-   ;:hook (company-mode . company-box-mode))
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "<return>") nil)
+    (define-key company-active-map (kbd "RET") nil)
+    (define-key company-active-map (kbd "C-SPC") #'company-complete-selection))
+                                          ;(use-package company-box
+                                          ;:hook (company-mode . company-box-mode))
 
 #+end_src
 
@@ -1004,11 +1008,21 @@ Use variable pitch font in documentation modes.
 *** Python
 #+begin_src emacs-lisp
   (setq python-shell-interpreter "python3")
+
   (use-package lsp-python-ms
     :ensure t
     :hook (python-mode . (lambda ()
                            (require 'lsp-python-ms)
                            (lsp))))
+  ;; fix for company-capf errors
+  (yas-global-mode)
+  (use-package pyvenv
+    :after python
+    :hook (python-mode . pyvenv-mode)
+    :custom
+    (pyvenv-default-virtual-env-name "env")
+    (pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:"
+                                                           pyvenv-virtual-env-name "]"))))
 #+end_src
 * Productivity
 ** Google This
