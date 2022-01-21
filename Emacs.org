@@ -6,9 +6,10 @@
 #+begin_src emacs-lisp
 
   (defconst cfg/writing-modes '(org-mode text-mode))
-  (defconst cfg/default-font-size 160)
+  (defconst cfg/default-font-size 150)
   (defconst cfg/fill-column 85)
-  (defconst cfg/fill-dark-columnn 100)
+  (defconst cfg/fill-dark-column 100)
+  (defconst cfg/ws-color "#767679")
 
 #+end_src
 
@@ -411,6 +412,7 @@ so that mode line icons display correctly.
     :config (setq
               doom-modeline-minor-modes t
               doom-modeline-height 12))
+  (setq display-battery-mode t)
 
 #+end_src
 
@@ -814,7 +816,7 @@ Word counting shows word information in the modeline.
   )
 
   (use-package flyspell
-    :diminish (flyspell-mode . " [F7]"))
+    :diminish (flyspell-mode . " [F]"))
 
 #+end_src
 
@@ -837,6 +839,25 @@ Use variable pitch font in documentation modes.
 
   ;; add line numbers in programming mode
   (add-hook 'prog-mode-hook 'linum-mode)
+
+#+end_src
+
+*** Whitespace-mode
+#+begin_src emacs-lisp
+  (setq whitespace-style '(face tabs tab-mark spaces space-mark))
+  (setq whitespace-display-mappings
+        '((space-mark ?\ [?\u00B7] [?.])          ; space - centered dot
+          (space-mark ?\xA0 [?\u00A4] [?_])       ; hard space - currency
+          (newline-mark ?\n [?$ ?\n])             ; eol - dollar sign
+          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])  ; tab - left quote mark
+          ))
+  (custom-set-faces
+   '(whitespace-space
+     ((t '(:foreground cfg/ws-color :background nil))))
+   '(whitespace-tab
+     ((t '(:foreground cfg/ws-color :background nil)))))
+  (add-hook 'prog-mode-hook 'whitespace-mode)
+
 
 #+end_src
 
@@ -981,38 +1002,35 @@ Use variable pitch font in documentation modes.
 *** Haskell
 #+begin_src emacs-lisp
 
-  (use-package lsp-haskell)
-  (use-package haskell-mode
-    :config
-    (require 'lsp-haskell)
-    (setq haskell-literate-default 'bird)
-    (setq haskell-process-suggest-remove-import-lines t)
-    (setq haskell-process-auto-import-loaded-modules t)
-    (setq haskell-process-log t)
-    (setq haskell-process-type 'auto)
+    (use-package lsp-haskell)
+    (use-package haskell-mode
+      :config
+      (require 'lsp-haskell)
+      (setq haskell-literate-default 'bird)
+      (setq haskell-process-suggest-remove-import-lines t)
+      (setq haskell-process-auto-import-loaded-modules t)
+      (setq haskell-process-log t)
+      (setq haskell-process-type 'auto))
 
-    (add-hook 'haskell-mode-hook
-              (lambda ()
-                (setq-local whitespace-style '(face lines trailing tabs)))))
+    (use-package company-ghci)
+    (push 'company-ghci company-backends)
+    (add-hook 'haskell-mode-hook 'company-mode)
+    ;;; To get completions in the REPL
+    (add-hook 'haskell-interactive-mode-hook 'company-mode)
 
-  (use-package company-ghci)
-  (push 'company-ghci company-backends)
-  (add-hook 'haskell-mode-hook 'company-mode)
-  ;;; To get completions in the REPL
-  (add-hook 'haskell-interactive-mode-hook 'company-mode)
+    (add-hook 'haskell-mode-hook #'lsp)
+    (add-hook 'haskell-literate-mode-hook #'lsp)
 
-  (add-hook 'haskell-mode-hook #'lsp)
-  (add-hook 'haskell-literate-mode-hook #'lsp)
-
-  (eval-after-load 'haskell-mode '(progn
-    (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-    (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-    (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
-    (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
-    (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
-    (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
-    (define-key haskell-mode-map (kbd "C-c C-o") 'haskell-compile)
-  ))
+    (eval-after-load 'haskell-mode '(progn
+      (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
+      (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
+      (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
+      (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
+      (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
+      (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
+      (define-key haskell-mode-map (kbd "C-c C-o") 'haskell-compile)
+      (define-key haskell-mode-map "\C-ch" 'haskell-hoogle)
+      ))
 
 #+end_src
 *** Python
@@ -1084,10 +1102,10 @@ Open config file
   (global-set-key (kbd "C-c 3") #'split-window-right)
   (global-set-key (kbd "C-c /") #'comment-dwim)
   (global-set-key "\C-d" "\C-a\C- \C-n\M-w\C-y\C-p") ; duplicate line
-
   ;; auto complete
   (global-set-key (kbd "C-<tab>") 'dabbrev-expand)
   (define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
+  (global-set-key (kbd "C-x w") 'whitespace-mode)
 
 #+end_src
 
