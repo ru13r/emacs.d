@@ -347,7 +347,7 @@ Several packages depend on this
     (doom-themes-neotree-config)       ; Enable custom neotree theme
     (doom-themes-treemacs-config))
     :init
-    (load-theme 'doom-gruvbox t)
+    (load-theme 'doom-outrun-electric t)
 
 #+end_src
 
@@ -410,17 +410,16 @@ so that mode line icons display correctly.
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
     :config (setq
+              display-battery-mode t
               doom-modeline-minor-modes t
               doom-modeline-height 12))
-  (setq display-battery-mode t)
-
 #+end_src
 
 ** Minions
 #+begin_src emacs-lisp
-  (use-package minions
-    :config (minions-mode 1)
-    )
+  (use-package minions)
+  (setq minions-prominent-modes '(wc-mode display-battery-mode))
+  (minions-mode 1)
 #+end_src
 
 ** Treemacs
@@ -938,8 +937,8 @@ Use variable pitch font in documentation modes.
     (use-package lsp-ui
       :hook (lsp-mode . lsp-ui-mode))
     (setq
-        lsp-ui-sideline-enable nil
-        lsp-ui-doc-mode nil
+        lsp-ui-sideline-enable t
+        lsp-ui-doc-mode t
         lsp-ui-doc-show-with-cursor nil
         lsp-ui-doc-show-with-mouse nil
         lsp-lens-enable t
@@ -987,7 +986,7 @@ Use variable pitch font in documentation modes.
      company-tooltip-align-annotations t
      company-tooltip-flip-when-above t
      company-show-numbers t
-     company-idle-delay 0.2))
+     company-idle-delay 1))
 
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "<return>") nil)
@@ -1135,23 +1134,6 @@ It’s useful to have a scratch buffer around, and more useful to have a key cho
 
   (global-set-key (kbd "C-c a s") #'switch-to-scratch-buffer)
 
-#+end_src
-** Evil Mode
-#+begin_src emacs-lisp
-  (use-package evil
-    :ensure t
-    :init
-    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-    (setq evil-want-keybinding nil)
-    :config
-    (evil-mode 0))
-
-  (use-package evil-collection
-    :after evil
-    :diminish evil-collection-unimpaired-mode
-    :ensure t
-    :config
-    (evil-collection-init))
 #+end_src
 * Version Control
 ** Magit
