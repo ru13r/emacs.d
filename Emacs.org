@@ -155,6 +155,7 @@ Be careful with these settings on different systems. This code was originally wr
 #+begin_src emacs-lisp
   (if (eq system-type 'darwin)
    (setq mac-command-modifier 'control)
+   (setq mac-control-modifier 'super)
    (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>")))
    #+end_src
 
@@ -360,7 +361,11 @@ An extensible emacs startup screen showing you what’s most important.
 
   (use-package dashboard
     :config
-    (dashboard-setup-startup-hook))
+    (dashboard-setup-startup-hook)
+    (setq dashboard-items
+          '((recents  . 5)
+            (bookmarks . 5)
+            (projects . 5))))
   (setq
     dashboard-startup-banner 'logo
     dashboard-center-content t
@@ -916,6 +921,16 @@ Use variable pitch font in documentation modes.
 
 #+end_src
 
+** Projectile
+#+begin_src emacs-lisp
+  (require 'projectile)
+  ;; Recommended keymap prefix on macOS
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  ;; Recommended keymap prefix on Windows/Linux
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1)
+
+#+end_src
 ** Language Servers
 
 #+begin_src emacs-lisp
