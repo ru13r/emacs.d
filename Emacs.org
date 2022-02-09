@@ -154,10 +154,14 @@ Be careful with these settings on different systems. This code was originally wr
 ** Mac OS X hacks
 #+begin_src emacs-lisp
   (if (eq system-type 'darwin)
-   (setq mac-command-modifier 'control)
-   (setq mac-control-modifier 'super)
-   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>")))
-   #+end_src
+      (progn
+        (setq
+         mac-command-modifier 'control
+         mac-control-modifier 'super)
+        (define-key key-translation-map
+          (kbd "<s-mouse-1>")
+          (kbd "<mouse-2>"))))
+#+end_src
 
 * Emacs Improvements
 ** Which Key
