@@ -732,6 +732,18 @@ This snippet adds a hook to =org-mode= buffers so that =cfg/org-babel-tangle-con
 
 #+end_src
 
+** Clip Link
+
+A simple command that takes a URL from the clipboard and inserts an org-mode link with a title of a page found by the URL into the current buffer.
+
+#+begin_src emacs-lisp
+  (use-package org-cliplink
+    :after org
+    :config
+    (global-set-key (kbd "C-x p i") 'org-cliplink))
+#+end_src
+
+
 * Elfeed
 ** Elfeed configuration
 #+begin_src emacs-lisp
@@ -742,7 +754,7 @@ This snippet adds a hook to =org-mode= buffers so that =cfg/org-babel-tangle-con
           (expand-file-name "elfeed" user-emacs-directory)
           elfeed-show-entry-switch 'display-buffer)
     :bind
-    ("C-c f" . elfeed ) )
+    ("C-c f" . elfeed )
 
   (use-package elfeed-goodies
     :ensure t
