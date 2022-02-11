@@ -754,7 +754,7 @@ A simple command that takes a URL from the clipboard and inserts an org-mode lin
           (expand-file-name "elfeed" user-emacs-directory)
           elfeed-show-entry-switch 'display-buffer)
     :bind
-    ("C-c f" . elfeed )
+    ("C-c f" . elfeed ))
 
   (use-package elfeed-goodies
     :ensure t
@@ -774,6 +774,7 @@ A simple command that takes a URL from the clipboard and inserts an org-mode lin
     (setq rmh-elfeed-org-files (list "~/org/elfeed.org")))
 #+end_src
 *
+
 * Text Modes
 ** Variable Pitch Mode
 
